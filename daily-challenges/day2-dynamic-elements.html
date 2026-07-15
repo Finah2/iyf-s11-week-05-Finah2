@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 2 — Dynamic Element Creator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Georgia, sans-serif; background: #1a1a2e; color: #fff; min-height: 100vh; padding: 2rem; }
+        .wrapper { max-width: 600px; margin: 0 auto; }
+        h1 { color: #39ff14; font-size: 2rem; margin-bottom: 0.25rem; }
+        .subtitle { color: #555; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        p.desc { color: #aaa; margin-bottom: 2rem; line-height: 1.7; }
+        .btn-group { display: flex; gap: 0.75rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        #add-btn { background: #39ff14; color: #1a1a2e; }
+        #add-btn:hover { background: #28b30e; transform: translateY(-2px); }
+        #clear-btn { background: transparent; color: #e74c3c; border: 2px solid #e74c3c; }
+        #clear-btn:hover { background: #e74c3c; color: #fff; }
+        #para-container { display: flex; flex-direction: column; gap: 0.5rem; }
+        .para-item {
+            background: #16213e;
+            border-left: 4px solid #39ff14;
+            padding: 0.75rem 1rem;
+            border-radius: 0 6px 6px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .para-item span { color: #ddd; font-size: 0.9rem; }
+        .del-btn { background: none; border: none; color: #444; cursor: pointer; font-size: 1rem; padding: 0.2rem 0.5rem; border-radius: 4px; transition: color 0.2s; }
+        .del-btn:hover { color: #e74c3c; }
+        .empty { color: #444; text-align: center; padding: 2rem; font-size: 0.9rem; }
+        #count { color: #555; font-size: 0.85rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <h1>Dynamic Element Creator</h1>
+        <p class="subtitle">Day 2 — Week 5</p>
+        <p class="desc">Each click of the button creates a new numbered paragraph dynamically using JavaScript. Each one also has its own delete button to remove it individually.</p>
+
+        <div class="btn-group">
+            <button id="add-btn">➕ Add Paragraph</button>
+            <button id="clear-btn">🗑️ Clear All</button>
+        </div>
+
+        <p id="count">0 paragraphs added</p>
+        <div id="para-container">
+            <p class="empty">No paragraphs yet — click the button above!</p>
+        </div>
+    </div>
+
+    <script>
+        let count = 0;
+        const container = document.getElementById("para-container");
+        const countEl = document.getElementById("count");
+
+        document.getElementById("add-btn").addEventListener("click", () => {
+            count++;
+
+            // Remove empty state
+            const empty = container.querySelector(".empty");
+            if (empty) empty.remove();
+
+            const item = document.createElement("div");
+            item.className = "para-item";
+            item.dataset.id = count;
+
+            const text = document.createElement("span");
+            text.textContent = `Paragraph ${count} — created at ${new Date().toLocaleTimeString()}`;
+
+            const delBtn = document.createElement("button");
+            delBtn.className = "del-btn";
+            delBtn.textContent = "✕";
+            delBtn.title = "Delete this paragraph";
+            delBtn.addEventListener("click", () => {
+                item.style.opacity = "0";
+                item.style.transform = "translateX(-10px)";
+                item.style.transition = "all 0.3s";
+                setTimeout(() => {
+                    item.remove();
+                    updateCount();
+                    if (container.children.length === 0) {
+                        container.innerHTML = '<p class="empty">No paragraphs yet — click the button above!</p>';
+                    }
+                }, 300);
+            });
+
+            item.appendChild(text);
+            item.appendChild(delBtn);
+            container.appendChild(item);
+            updateCount();
+        });
+
+        document.getElementById("clear-btn").addEventListener("click", () => {
+            count = 0;
+            container.innerHTML = '<p class="empty">No paragraphs yet — click the button above!</p>';
+            updateCount();
+        });
+
+        function updateCount() {
+            const items = container.querySelectorAll(".para-item").length;
+            countEl.textContent = `${items} paragraph${items !== 1 ? "s" : ""} added`;
+        }
+    </script>
+
+</body>
+</html>
