@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 1 — Color Changer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Georgia, sans-serif; background: #1a1a2e; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; }
+        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; transition: color 0.4s ease; }
+        h2 { font-size: 1.5rem; margin: 1rem 0; transition: color 0.4s ease; }
+        h3 { font-size: 1.1rem; margin: 0.5rem 0 2rem; transition: color 0.4s ease; color: #aaa; }
+        p { color: #aaa; margin-bottom: 2rem; max-width: 400px; line-height: 1.7; }
+        button {
+            padding: 0.9rem 2.5rem;
+            background: #39ff14;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover { background: #28b30e; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(57,255,20,0.4); }
+        #color-display { margin-top: 1.5rem; font-size: 0.85rem; color: #555; font-family: monospace; }
+    </style>
+</head>
+<body>
+
+    <h1>Daily Challenge</h1>
+    <h2>Color Changer</h2>
+    <h3>Day 1 — Week 5</h3>
+
+    <p>Click the button below to change all headings to a random color. Every click generates a new random hex color and applies it to all h1, h2 and h3 elements on the page.</p>
+
+    <button onclick="changeColors()">🎨 Change Heading Colors</button>
+
+    <p id="color-display">Current color: —</p>
+
+    <script>
+        function randomHexColor() {
+            const hex = Math.floor(Math.random() * 0xFFFFFF).toString(16);
+            return `#${hex.padStart(6, "0")}`;
+        }
+
+        function changeColors() {
+            const color = randomHexColor();
+            const headings = document.querySelectorAll("h1, h2, h3");
+            headings.forEach(h => {
+                h.style.color = color;
+            });
+            document.getElementById("color-display").textContent = `Current color: ${color}`;
+        }
+
+        // Set initial green color on load
+        window.addEventListener("load", () => {
+            document.querySelector("h1").style.color = "#39ff14";
+        });
+    </script>
+
+</body>
+</html>
