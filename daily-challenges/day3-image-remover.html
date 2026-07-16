@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 3 — Image Remover</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Georgia, sans-serif; background: #1a1a2e; color: #fff; min-height: 100vh; padding: 2rem; }
+        .wrapper { max-width: 700px; margin: 0 auto; }
+        h1 { color: #39ff14; font-size: 2rem; margin-bottom: 0.25rem; }
+        .subtitle { color: #555; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        p.desc { color: #aaa; margin-bottom: 2rem; line-height: 1.7; }
+        .btn-group { display: flex; gap: 0.75rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        #toggle-btn { background: #39ff14; color: #1a1a2e; }
+        #toggle-btn:hover { background: #28b30e; transform: translateY(-2px); }
+        #remove-btn { background: transparent; color: #e74c3c; border: 2px solid #e74c3c; }
+        #remove-btn:hover { background: #e74c3c; color: #fff; }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .gallery figure { border-radius: 8px; overflow: hidden; }
+        .gallery img { width: 100%; height: 150px; object-fit: cover; display: block; transition: opacity 0.4s ease; border-radius: 8px; }
+        .gallery figcaption { color: #555; font-size: 0.8rem; text-align: center; margin-top: 0.3rem; }
+        #status { color: #555; font-size: 0.85rem; margin-top: 1rem; }
+        .removed-notice { background: #16213e; border: 1px dashed #333; border-radius: 8px; padding: 2rem; text-align: center; color: #444; font-size: 0.9rem; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <h1>Image Remover</h1>
+        <p class="subtitle">Day 3 — Week 5</p>
+        <p class="desc">Toggle hides and shows all images on the page. Remove permanently deletes them from the DOM. Both buttons demonstrate different ways to handle images with JavaScript.</p>
+
+        <div class="btn-group">
+            <button id="toggle-btn">🙈 Hide Images</button>
+            <button id="remove-btn">🗑️ Remove All Images</button>
+        </div>
+
+        <div class="gallery" id="gallery">
+            <figure>
+                <img src="https://placehold.co/300x150/1a1a2e/39ff14?text=Image+1" alt="Image 1">
+                <figcaption>Coding session</figcaption>
+            </figure>
+            <figure>
+                <img src="https://placehold.co/300x150/39ff14/1a1a2e?text=Image+2" alt="Image 2">
+                <figcaption>Study notes</figcaption>
+            </figure>
+            <figure>
+                <img src="https://placehold.co/300x150/16213e/39ff14?text=Image+3" alt="Image 3">
+                <figcaption>Project work</figcaption>
+            </figure>
+            <figure>
+                <img src="https://placehold.co/300x150/39ff14/1a1a2e?text=Image+4" alt="Image 4">
+                <figcaption>Campus life</figcaption>
+            </figure>
+        </div>
+
+        <div class="removed-notice" id="removed-notice">
+            All images have been permanently removed from the DOM. Refresh the page to bring them back.
+        </div>
+
+        <p id="status">4 images visible</p>
+    </div>
+
+    <script>
+        let hidden = false;
+        const toggleBtn = document.getElementById("toggle-btn");
+        const removeBtn = document.getElementById("remove-btn");
+        const status = document.getElementById("status");
+        const notice = document.getElementById("removed-notice");
+
+        toggleBtn.addEventListener("click", () => {
+            const images = document.querySelectorAll(".gallery img");
+            hidden = !hidden;
+
+            images.forEach(img => {
+                img.style.opacity = hidden ? "0" : "1";
+                img.style.height = hidden ? "0" : "150px";
+            });
+
+            toggleBtn.textContent = hidden ? "👁️ Show Images" : "🙈 Hide Images";
+            status.textContent = hidden ? "Images hidden (still in DOM)" : `${images.length} images visible`;
+        });
+
+        removeBtn.addEventListener("click", () => {
+            const gallery = document.getElementById("gallery");
+            gallery.innerHTML = "";
+            notice.style.display = "block";
+            status.textContent = "All images removed from the DOM";
+            removeBtn.disabled = true;
+            removeBtn.style.opacity = "0.4";
+            toggleBtn.disabled = true;
+            toggleBtn.style.opacity = "0.4";
+        });
+    </script>
+
+</body>
+</html>
