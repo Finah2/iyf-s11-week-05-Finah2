@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM Practice</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Georgia, sans-serif; background: #f5f5f5; color: #222; padding: 2rem; }
+        .highlight { background-color: #39ff14; color: #1a1a2e; padding: 0.2rem 0.4rem; border-radius: 3px; }
+        .container { padding: 20px; border: 1px solid #ccc; background: #fff; border-radius: 8px; margin-top: 1rem; }
+        header { background: #1a1a2e; color: #fff; padding: 1.5rem 2rem; border-radius: 8px; margin-bottom: 1rem; }
+        header h1 { color: #39ff14; margin-bottom: 0.5rem; }
+        nav ul { list-style: none; display: flex; gap: 1.5rem; }
+        nav a { color: #ccc; text-decoration: none; }
+        nav a:hover { color: #39ff14; }
+        .title { color: #1a1a2e; margin-bottom: 0.75rem; }
+        .content { color: #555; margin-bottom: 0.5rem; line-height: 1.7; }
+        input, button { padding: 0.5rem 1rem; margin: 0.3rem; border-radius: 4px; border: 1px solid #ccc; font-size: 1rem; }
+        button { background: #39ff14; color: #1a1a2e; border: none; cursor: pointer; font-weight: bold; }
+        footer { margin-top: 1rem; text-align: center; color: #888; font-size: 0.875rem; }
+    </style>
+</head>
+<body>
+
+    <header id="main-header">
+        <h1>DOM Practice</h1>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="#" class="nav-link">Home</a></li>
+                <li><a href="#" class="nav-link">About</a></li>
+                <li><a href="#" class="nav-link">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <article>
+            <h2 class="title">Article Title</h2>
+            <p class="content">This is the first paragraph.</p>
+            <p class="content">This is the second paragraph.</p>
+        </article>
+
+        <section style="margin-top:1.5rem;">
+            <h2 style="margin-bottom:0.75rem;">Form Section</h2>
+            <form id="contact-form">
+                <input type="text" id="name" name="name" placeholder="Name">
+                <input type="email" id="email" name="email" placeholder="Email">
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Finah Nyamwaya</p>
+    </footer>
+
+    <script src="js/dom.js"></script>
+</body>
+</html>
