@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 5 — DOM Manipulation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Open+Sans&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green: #39ff14;
+      --navy: #1a1a2e;
+      --dark: #16213e;
+      --muted: #666;
+    }
+
+    body { font-family: 'Open Sans', sans-serif; background: #f5f5f5; color: #222; }
+
+    nav {
+      background: var(--navy);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo { color: var(--green); font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.2rem; }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav a { color: #ccc; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+    nav a:hover, nav a.active { color: var(--green); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 25px; height: 2px; background: #fff; }
+
+    .hero {
+      background: linear-gradient(135deg, var(--navy), var(--dark));
+      color: #fff;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .hero h1 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .hero h1 span { color: var(--green); }
+    .hero p { color: #aaa; font-size: 1.1rem; margin-bottom: 2rem; }
+
+    .btn-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.8rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      text-decoration: none;
+      transition: all 0.3s;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .btn-primary { background: var(--green); color: var(--navy); }
+    .btn-primary:hover { background: #28b30e; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(57,255,20,0.3); }
+    .btn-secondary { background: transparent; color: var(--green); border-color: var(--green); }
+    .btn-secondary:hover { background: var(--green); color: var(--navy); transform: translateY(-2px); }
+
+    .section { max-width: 1000px; margin: 3rem auto; padding: 0 1.5rem; }
+
+    .section h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid var(--green);
+      padding-left: 0.75rem;
+      color: var(--navy);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border-top: 3px solid var(--green);
+      transition: transform 0.3s ease, box-shadow 0.3s;
+    }
+
+    .card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+    .card h3 { font-family: 'Poppins', sans-serif; margin-bottom: 0.75rem; color: var(--navy); }
+    .card p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+    .card code { background: #f0f0f0; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.82rem; color: var(--navy); }
+
+    .icon { font-size: 2rem; margin-bottom: 0.75rem; }
+
+    .file-list {
+      background: var(--navy);
+      color: #39ff14;
+      padding: 1.5rem;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      line-height: 2;
+    }
+
+    .file-list .comment { color: #444; }
+
+    footer {
+      background: var(--navy);
+      color: #aaa;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 3rem;
+      font-size: 0.875rem;
+    }
+
+    @media (max-width: 767px) {
+      .hamburger { display: flex; }
+      nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--navy); flex-direction: column; padding: 1rem 2rem; gap: 1rem; }
+      nav ul.open { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">FN</div>
+  <ul id="navLinks">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="todo.html" style="color:#39ff14; font-weight:600;">📚 Tasks</a></li>
+  </ul>
+  <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="hero">
+  <h1>Week 5: <span>DOM Manipulation</span></h1>
+  <p>This week I learned to make pages actually respond to what you do. Click things, type things, watch things change.</p>
+  <div class="btn-group">
+    <a href="todo.html" class="btn btn-primary">📚 Open Task Manager</a>
+    <a href="dom-practice.html" class="btn btn-secondary">🔬 DOM Practice</a>
+  </div>
+</div>
+
+<main class="section">
+  <h2>What I Built This Week</h2>
+  <div class="cards">
+
+    <div class="card">
+      <div class="icon">🎯</div>
+      <h3>Selecting Elements</h3>
+      <p>Learned four ways to grab elements — <code>getElementById</code>, <code>querySelector</code>, <code>querySelectorAll</code>, and <code>getElementsByClassName</code>. Each one has its place.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🌳</div>
+      <h3>Traversing the DOM</h3>
+      <p>Navigated up and down the DOM tree using <code>parentElement</code>, <code>children</code>, <code>nextElementSibling</code>. The DOM is literally a tree and you can climb it.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">✏️</div>
+      <h3>Modifying Content</h3>
+      <p>Changed text with <code>textContent</code>, swapped HTML with <code>innerHTML</code>, updated attributes and styles — all without touching the HTML file.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">➕</div>
+      <h3>Adding & Removing Elements</h3>
+      <p>Created elements with <code>createElement</code>, added them with <code>appendChild</code> and <code>prepend</code>, cloned existing ones, and removed them with <code>.remove()</code>.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">👂</div>
+      <h3>Event Listeners</h3>
+      <p>Made things respond to clicks, key presses, form submissions, mouse movements. Built a click counter and keyboard shortcuts including Ctrl+S and Escape.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🫧</div>
+      <h3>Event Bubbling & Delegation</h3>
+      <p>Learned how clicks travel up the DOM from child to parent. Used event delegation to handle all task clicks with just ONE listener on the parent — much cleaner.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">✅</div>
+      <h3>Form Validation</h3>
+      <p>Added real-time validation to forms — name length check, email format check with regex, error messages that appear and disappear as you type.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">📚</div>
+      <h3>School Task Manager</h3>
+      <p>Built a full to-do list with add, complete, delete, filter and edit features. Pre-loaded with real school tasks. My most complete project yet.</p>
+    </div>
+
+  </div>
+
+  <h2>Project Files</h2>
+  <div class="file-list">
+    todo.html &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># school task manager — main project</span><br>
+    dom-practice.html &nbsp;<span class="comment"># DOM practice page with all exercises</span><br>
+    js/<br>
+    ├── app.js &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># to-do list logic — add, toggle, delete, filter</span><br>
+    ├── dom.js &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># tasks 9.1–10.4, click counter, form validation</span><br>
+    └── daily-challenges.js <span class="comment"># color changer, dark mode, content copier etc</span><br>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2026 Finah Nyamwaya — Week 5: DOM Manipulation</p>
+</footer>
+
+</body>
+</html>
