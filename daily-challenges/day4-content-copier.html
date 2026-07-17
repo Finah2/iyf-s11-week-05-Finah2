@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 4 — Content Copier</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Georgia, sans-serif; background: #1a1a2e; color: #fff; min-height: 100vh; padding: 2rem; }
+        .wrapper { max-width: 700px; margin: 0 auto; }
+        h1 { color: #39ff14; font-size: 2rem; margin-bottom: 0.25rem; }
+        .subtitle { color: #555; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        p.desc { color: #aaa; margin-bottom: 2rem; line-height: 1.7; }
+        .panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .panel {
+            background: #16213e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            min-height: 200px;
+            border: 2px solid #222;
+            transition: border-color 0.3s;
+        }
+        .panel.source { border-color: #39ff14; }
+        .panel.target { border-style: dashed; }
+        .panel.target.filled { border-color: #39ff14; border-style: solid; }
+        .panel-label {
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            color: #39ff14;
+        }
+        .panel p { color: #aaa; font-size: 0.9rem; line-height: 1.7; margin-bottom: 0.5rem; }
+        .panel ul { color: #aaa; font-size: 0.9rem; padding-left: 1.2rem; line-height: 1.8; }
+        .empty-target { color: #333; font-size: 0.9rem; font-style: italic; }
+        .btn-group { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        #copy-btn { background: #39ff14; color: #1a1a2e; }
+        #copy-btn:hover { background: #28b30e; transform: translateY(-2px); }
+        #clear-btn { background: transparent; color: #e74c3c; border: 2px solid #e74c3c; }
+        #clear-btn:hover { background: #e74c3c; color: #fff; }
+        #status { color: #555; font-size: 0.85rem; margin-top: 1rem; }
+
+        @media (max-width: 500px) {
+            .panels { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <h1>Content Copier</h1>
+        <p class="subtitle">Day 4 — Week 5</p>
+        <p class="desc">Copies the content from the source panel to the target panel using JavaScript's <code style="background:#16213e; padding:0.1rem 0.4rem; border-radius:3px; font-size:0.85rem;">innerHTML</code> property. Click copy to transfer, clear to reset the target.</p>
+
+        <div class="panels">
+            <div class="panel source" id="source-panel">
+                <div class="panel-label">📄 Source</div>
+                <p>This week I learned how to manipulate the DOM using JavaScript. Here are the key things I picked up:</p>
+                <ul>
+                    <li>Selecting elements</li>
+                    <li>Modifying content</li>
+                    <li>Adding event listeners</li>
+                    <li>Creating elements dynamically</li>
+                </ul>
+            </div>
+            <div class="panel target" id="target-panel">
+                <div class="panel-label">📋 Target</div>
+                <p class="empty-target">Content will appear here after copying...</p>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button id="copy-btn">📋 Copy Content</button>
+            <button id="clear-btn">🗑️ Clear Target</button>
+        </div>
+
+        <p id="status">Ready to copy</p>
+    </div>
+
+    <script>
+        const source = document.getElementById("source-panel");
+        const target = document.getElementById("target-panel");
+        const status = document.getElementById("status");
+
+        document.getElementById("copy-btn").addEventListener("click", () => {
+            // Get source content without the label
+            const label = source.querySelector(".panel-label").outerHTML;
+            const sourceContent = source.innerHTML.replace(label, "");
+
+            target.innerHTML = `<div class="panel-label">📋 Target</div>` + sourceContent;
+            target.classList.add("filled");
+
+            status.textContent = `✅ Content copied at ${new Date().toLocaleTimeString()}`;
+            status.style.color = "#39ff14";
+        });
+
+        document.getElementById("clear-btn").addEventListener("click", () => {
+            target.innerHTML = `
+                <div class="panel-label">📋 Target</div>
+                <p class="empty-target">Content will appear here after copying...</p>
+            `;
+            target.classList.remove("filled");
+            status.textContent = "Target cleared";
+            status.style.color = "#555";
+        });
+    </script>
+
+</body>
+</html>
